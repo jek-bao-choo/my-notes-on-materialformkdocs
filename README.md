@@ -14,8 +14,9 @@ uv tool install mkdocs --with mkdocs-material
 # (This command appends the required theme block directly to the file)
 echo -e "theme:\n  name: material" >> mkdocs.yml
 
-# 6. Start the local development server
 mkdocs serve
+
+mkdocs build
 ```
 
 # 2. Update MkDocs
@@ -30,16 +31,30 @@ uv tool upgrade --all
 uv tool uninstall mkdocs --with mkdocs-material
 ```
 
-# 4. Deploy to GitHub Pages or Cloudflare Pages
+# 4. [Deploy to GitHub Pages or Cloudflare Pages](https://squidfunk.github.io/mkdocs-material/publishing-your-site/)
 ## Option 1: Deploy to GitHub Pages (via GitHub Actions)
 GitHub Pages is the most common way to host MkDocs sites. We will use a GitHub Action to automatically build and deploy your site every time you push to the main branch.
 
 ### 1. Create the workflow file
-In your project directory, create a .github/workflows folder and add a file named deploy.yml:
+In your project directory, create a `.github/workflows` folder and add a file named `deploy.yml`:
 
 ```bash
 mkdir -p .github/workflows
 touch .github/workflows/deploy.yml
+```
+
+Also 
+
+```bash
+echo 'site_url: https://<your-username>.github.io/<your-repo-name>/' >> mkdocs.yml
+```
+
+Eventually it would look like this:
+```yaml
+site_name: My Docs
+site_url: https://<your-username>.github.io/<your-repo-name>/
+theme:
+  name: material
 ```
 
 ### 2. Add the Action configuration
@@ -71,7 +86,18 @@ jobs:
 Commit your code and push it to GitHub. MkDocs will automatically create a gh-pages branch and publish your site. (Note: You may need to go to your repository Settings > Pages and ensure the source is set to the gh-pages branch).
 
 ## Option 2: Deploy to Cloudflare Pages
-Cloudflare Pages doesn't need a configuration file in your repository. You just connect your GitHub repository to Cloudflare and give it a single line of instructions.
+Cloudflare Pages doesn't need a configuration file in your repository. You just connect your GitHub repository to Cloudflare and give it a single line of instructions. Start by 
+```bash
+echo 'site_url: https://<your-project-name>.pages.dev/' >> mkdocs.yml
+```
+
+It would look like this
+```yaml
+site_name: My Docs
+site_url: https://<your-username>.github.io/<your-repo-name>/
+theme:
+  name: material
+```
 
 ### 1. Connect Cloudflare to GitHub
 
