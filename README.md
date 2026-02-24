@@ -1,42 +1,33 @@
 # 0. Pre-req:
-- [uv](https://docs.astral.sh/uv/)
+[uv](https://docs.astral.sh/uv/)
 
-# 1. Create (Setup & Initialize)
+# 1. Setup & Initialize MkDocs
 ```bash
 # 1. Create and enter a new directory
 mkdir my-docs # OR create repo in Github
 cd my-docs
 
-# 2. Initialize a modern uv project (creates pyproject.toml)
-uv init
+# 2. Install mkdocs with material design
+uv tool install mkdocs --with mkdocs-material
 
-# 3. Add mkdocs-material (uv automatically creates .venv and installs it)
-uv add mkdocs-material
-
-# 4. Initialize the MkDocs site structure (creates mkdocs.yml and docs/ directory)
-uv run mkdocs new .
-
-# 5. Add the theme configuration to mkdocs.yml
+# 3. Add the theme configuration to mkdocs.yml
 # (This command appends the required theme block directly to the file)
 echo -e "theme:\n  name: material" >> mkdocs.yml
 
 # 6. Start the local development server
-uv run mkdocs serve
+mkdocs serve
 ```
 
-# 2. Update (Upgrading the Theme)
+# 2. Update MkDocs
 ```bash
-# 1. Fetch the latest version and update the lockfile
-uv lock --upgrade-package mkdocs-material
-
-# 2. Sync your virtual environment to match the updated lockfile
-uv sync
+uv tool upgrade mkdocs
+uv tool install mkdocs --with mkdocs-material
+uv tool upgrade --all
 ```
 
-# 3. Delete (Removing the Package or Project)
+# 3. Delete MkDocs
 ```bash
-# Removes mkdocs-material from pyproject.toml and uninstalls it from the .venv
-uv remove mkdocs-material
+uv tool uninstall mkdocs --with mkdocs-material
 ```
 
 # 4. Deploy to GitHub Pages or Cloudflare Pages
