@@ -62,52 +62,42 @@ jobs:
       
       - name: Install uv
         uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-          
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          
-      - name: Install dependencies
-        run: uv sync
         
       - name: Deploy to GitHub Pages
-        run: uv run mkdocs gh-deploy --force
+        # uvx grabs mkdocs and the material theme, then runs the gh-deploy command
+        run: uvx --with mkdocs-material mkdocs gh-deploy --force
 ```
 ### 3. Push to GitHub
 Commit your code and push it to GitHub. MkDocs will automatically create a gh-pages branch and publish your site. (Note: You may need to go to your repository Settings > Pages and ensure the source is set to the gh-pages branch).
 
 ## Option 2: Deploy to Cloudflare Pages
-Cloudflare Pages is incredibly fast and connects directly to your GitHub repository without needing a workflow file in your code.
+Cloudflare Pages doesn't need a configuration file in your repository. You just connect your GitHub repository to Cloudflare and give it a single line of instructions.
 
-### 1. Push your code to GitHub
-Make sure your pyproject.toml, uv.lock, and mkdocs.yml are pushed to your GitHub repository.
+### 1. Connect Cloudflare to GitHub
 
-### 2. Connect Cloudflare to GitHub
-
-Log in to your Cloudflare Dashboard.
+Go to your Cloudflare Dashboard.
 
 Navigate to Workers & Pages > Create application > Pages > Connect to Git.
 
-Select your repository and click Begin setup.
+Select your MkDocs repository.
 
-### 3. Configure the Build Settings
-Cloudflare needs to know how to install uv and build your site. Fill out the build settings exactly like this:
+### 2. Configure the Build Settings
+Cloudflare provides a standard Linux environment, so we just need to install uv using standard pip, and then use uvx to build the HTML files.
+
+Fill out the settings exactly like this:
 
 Framework preset: None
 
-Build command: pip install uv && uv sync && uv run mkdocs build
+Build command: pip install uv && uvx --with mkdocs-material mkdocs build
 
 Build output directory: site
 
-### 4. Set Environment Variables
-Cloudflare Pages sometimes defaults to older Python versions. To ensure uv and MkDocs run properly, add an environment variable:
+### 3. Set the Python Version
+Cloudflare Pages sometimes defaults to an older Python version, which uv might not like.
 
 Click Environment variables (advanced).
 
 Add a variable named PYTHON_VERSION and set its value to 3.11.
 
-### 5. Save and Deploy
-Click Save and Deploy. Cloudflare will pull your code, install uv, sync your lockfile, and publish your site globally. Every time you push to your main branch, Cloudflare will automatically rebuild it.
+### 4. Deploy
+Click Save and Deploy. Cloudflare will pull your markdown files, use uvx to generate the static HTML into the site/ folder, and publish it to their global network.
