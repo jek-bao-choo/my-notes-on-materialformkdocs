@@ -1,6 +1,26 @@
 # 0. Pre-req:
 [uv](https://docs.astral.sh/uv/)
 
+# 1. Setup & Initialise Zensical
+Use Zensical instead of MkDocs. MkDocs isn't being maintained. Zensical is "MkDocs 2.0".
+```bash
+uv tool install zensical
+
+uv tool list
+
+uv tool upgrade zensical
+
+uv tool upgrade --all
+
+zensical new .
+
+zensical serve
+
+zensical build
+```
+
+---
+
 # 1. Setup & Initialize MkDocs
 ```bash
 # 1. Create and enter a new directory
